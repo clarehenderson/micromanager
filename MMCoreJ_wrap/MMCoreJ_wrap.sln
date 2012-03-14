@@ -242,6 +242,7 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tofra", "..\DeviceAdapters\Tofra\Tofra.vcproj", "{8D1E58FA-AD04-43A1-8BDF-0457103F8DE1}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "BaumerOptronic", "..\DeviceAdapters\BaumerOptronic\BaumerOptronic.vcproj", "{B06A629B-7EAA-4265-A4C0-8A0EC03B00B0}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "mmstudio", "..\mmstudio\mmstudio\mmstudio.vcproj", "{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "LeicaDMSTC", "..\DeviceAdapters\LeicaDMSTC\LeicaDMSTC.vcproj", "{A41C689F-E343-4BDA-8132-FE2ADB166249}"
 EndProject
@@ -1309,6 +1310,7 @@ Global
 		{91CCB72B-852D-47D8-82FA-0E19A300A125}.Release|Win32.Build.0 = Release|Win32
 		{91CCB72B-852D-47D8-82FA-0E19A300A125}.Release|x64.ActiveCfg = Release|x64
 		{91CCB72B-852D-47D8-82FA-0E19A300A125}.Release|x64.Build.0 = Release|x64
+<<<<<<< HEAD
 		{AC1AF894-E294-4A99-B8D1-1D7F5073B758}.Debug|Win32.ActiveCfg = Debug|Win32
 		{AC1AF894-E294-4A99-B8D1-1D7F5073B758}.Debug|Win32.Build.0 = Debug|Win32
 		{AC1AF894-E294-4A99-B8D1-1D7F5073B758}.Debug|x64.ActiveCfg = Debug|x64
@@ -1349,6 +1351,14 @@ Global
 		{70ADDFBB-1216-412E-B326-51A146C3B8A4}.Release|Win32.Build.0 = Release|Win32
 		{70ADDFBB-1216-412E-B326-51A146C3B8A4}.Release|x64.ActiveCfg = Release|x64
 		{70ADDFBB-1216-412E-B326-51A146C3B8A4}.Release|x64.Build.0 = Release|x64
+=======
+		{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}.Debug|Win32.ActiveCfg = Debug|Win32
+		{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}.Debug|Win32.Build.0 = Debug|Win32
+		{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}.Debug|x64.ActiveCfg = Debug|Win32
+		{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}.Release|Win32.ActiveCfg = Release|Win32
+		{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}.Release|Win32.Build.0 = Release|Win32
+		{9A4DDFD0-64D3-40C1-A59F-3BEA31C21F6A}.Release|x64.ActiveCfg = Release|Win32
+>>>>>>> f3312ee... Add a Visual Studio project for mmstudio
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
