@@ -70,7 +70,11 @@
 				AdditionalDependencies="hid.lib setupapi.lib"
 				OutputFile="$(OutDir)/mmgr_dal_$(ProjectName).dll"
 				LinkIncremental="2"
+<<<<<<< HEAD
 				AdditionalLibraryDirectories="..\..\..\3rdparty\Microsoft\WinDDK\7600.16385.1\lib\wxp\i386"
+=======
+				AdditionalLibraryDirectories="&quot;..\..\..\3rdparty\Microsoft\WinDDK\$(PlatformName)&quot;;D:\WinDDKð0.16385.1\lib\win7\i386"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
@@ -98,7 +102,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 		<Configuration
@@ -153,7 +157,11 @@
 				AdditionalDependencies="hid.lib setupapi.lib"
 				OutputFile="$(OutDir)/mmgr_dal_$(ProjectName).dll"
 				LinkIncremental="2"
+<<<<<<< HEAD
 				AdditionalLibraryDirectories="..\..\..\3rdparty\Microsoft\WinDDK\7600.16385.1\lib\win7\amd64"
+=======
+				AdditionalLibraryDirectories="&quot;..\..\..\3rdparty\Microsoft\WinDDK\$(PlatformName)&quot;;D:\WinDDKð0.16385.1\lib\win7\amd64"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
@@ -181,7 +189,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 		<Configuration
@@ -232,7 +240,11 @@
 				AdditionalDependencies="hid.lib setupapi.lib"
 				OutputFile="$(OutDir)/mmgr_dal_$(ProjectName).dll"
 				LinkIncremental="1"
+<<<<<<< HEAD
 				AdditionalLibraryDirectories="..\..\..\3rdparty\Microsoft\WinDDK\7600.16385.1\lib\wxp\i386"
+=======
+				AdditionalLibraryDirectories="&quot;..\..\..\3rdparty\Microsoft\WinDDK\$(PlatformName)&quot;;D:\WinDDKð0.16385.1\lib\win7\i386"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -261,7 +273,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 		<Configuration
@@ -313,7 +325,11 @@
 				AdditionalDependencies="hid.lib setupapi.lib"
 				OutputFile="$(OutDir)/mmgr_dal_$(ProjectName).dll"
 				LinkIncremental="1"
+<<<<<<< HEAD
 				AdditionalLibraryDirectories="..\..\..\3rdparty\Microsoft\WinDDK\7600.16385.1\lib\win7\amd64"
+=======
+				AdditionalLibraryDirectories="&quot;..\..\..\3rdparty\Microsoft\WinDDK\$(PlatformName)&quot;;D:\WinDDKð0.16385.1\lib\win7\amd64"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				GenerateDebugInformation="true"
 				SubSystem="2"
 				OptimizeReferences="2"
@@ -342,7 +358,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 	</Configurations>
