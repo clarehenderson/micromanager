@@ -49,11 +49,12 @@ import java.awt.geom.Point2D;
 import java.io.*;
 import java.nio.channels.FileChannel;
 import java.text.ParseException;
-import java.util.*;
 import java.util.List;
+import java.util.*;
 import java.util.concurrent.Semaphore;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.HashMap;
 import java.util.prefs.Preferences;
 import javax.swing.*;
 import javax.swing.table.AbstractTableModel;
@@ -3975,6 +3976,4 @@ public class DataCollectionForm extends javax.swing.JFrame {
       return OK;
       
    }
-
-
 }

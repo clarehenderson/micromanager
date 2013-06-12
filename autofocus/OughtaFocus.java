@@ -35,7 +35,6 @@ import mmcorej.CMMCore;
 import mmcorej.Configuration;
 import mmcorej.TaggedImage;
 
-import org.apache.commons.math.FunctionEvaluationException;
 import org.apache.commons.math.analysis.UnivariateRealFunction;
 import org.apache.commons.math.optimization.GoalType;
 import org.apache.commons.math.optimization.univariate.BrentOptimizer;
@@ -156,6 +155,7 @@ public class OughtaFocus extends AutofocusBase implements org.micromanager.api.A
 
    private double runAutofocusAlgorithm() throws Exception {
       UnivariateRealFunction scoreFun = new UnivariateRealFunction() {
+<<<<<<< HEAD
 
          public double value(double d) throws FunctionEvaluationException {
             try {
@@ -163,21 +163,32 @@ public class OughtaFocus extends AutofocusBase implements org.micromanager.api.A
             } catch (Exception e) {
                throw new FunctionEvaluationException(e, d);
             }
+=======
+         public double value(double d) {
+            return measureFocusScore(d);
+>>>>>>> fcaa8de... Ported MicroManager/plugins to Commons Math 3ish
          }
       };
-      BrentOptimizer brentOptimizer = new BrentOptimizer();
-      brentOptimizer.setAbsoluteAccuracy(tolerance);
+      BrentOptimizer brentOptimizer = new BrentOptimizer(tolerance,1e-11);
       imageCount_ = 0;
 
       CMMCore core = app_.getMMCore();
       double z = core.getPosition(core.getFocusDevice());
       startZUm_ = z;
 //      getCurrentFocusScore();
+<<<<<<< HEAD
       double zResult = brentOptimizer.optimize(scoreFun, GoalType.MAXIMIZE, z - searchRange / 2, z + searchRange / 2);
       ReportingUtils.logMessage("OughtaFocus Iterations: " + brentOptimizer.getIterationCount()
               + ", z=" + TextUtils.FMT2.format(zResult)
               + ", dz=" + TextUtils.FMT2.format(zResult - startZUm_)
               + ", t=" + (System.currentTimeMillis() - startTimeMs_));
+=======
+      double zResult = brentOptimizer.optimize(400000000, scoreFun, GoalType.MAXIMIZE, z - searchRange / 2, z + searchRange / 2).getValue();
+      ReportingUtils.logMessage("OughtaFocus Iterations: " + brentOptimizer.getEvaluations() +
+            ", z=" + TextUtils.FMT2.format(zResult) +
+            ", dz=" + TextUtils.FMT2.format(zResult - startZUm_) +
+            ", t=" + (System.currentTimeMillis() - startTimeMs_));
+>>>>>>> fcaa8de... Ported MicroManager/plugins to Commons Math 3ish
       return zResult;
    }
 
