@@ -11,6 +11,7 @@ banner() {
 	echo;
 }
 
+<<<<<<< HEAD
 bannerdie() {
 	echo;
 	echo "----==== $1 ====----";
@@ -18,6 +19,8 @@ bannerdie() {
 	exit 1;
 }
 
+=======
+>>>>>>> 708944b... Vastly improved build-openspim.sh
 banner "FINDING MY MARBLES D:"
 
 # TODO: Set all the correct environment variables; check the VS2010 bat?
@@ -28,13 +31,17 @@ msbuild="$dotnetfwdir$dotnetfwver\\msbuild.exe";
 
 test -a $msbuild || die "Couldn't find msbuild.exe ($msbuild). No .NET framework?";
 
+<<<<<<< HEAD
 echo "Found msbuild.exe at $msbuild."
 
+=======
+>>>>>>> 708944b... Vastly improved build-openspim.sh
 # TODO: Is this recorded anywhere definitive?
 ant="$(pwd)/../3rdpartypublic/apache-ant-1.6.5/bin/ant"
 
 test -a $ant || die "Couldn't find Apache Ant at $ant. Did you pull 3rdpartypublic?";
 
+<<<<<<< HEAD
 echo "Found ant at $ant."
 
 banner "BUILDING MMCORE & MMSTUDIO"
@@ -52,5 +59,18 @@ test "$(grep -c '^Build FAILED\.$' msbuild2.log)" == "0" || bannerdie "FAILED TO
 banner "BUILDING MICRO-MANAGER PLUGINS"
 
 $ant -quiet -buildfile "plugins/build.xml" clean compile build || bannerdie "FAILED TO BUILD MICRO-MANAGER PLUGINS! :(";
+=======
+banner "BUILDING DEVICE ADAPTERS"
+
+$msbuild MMCoreJ_wrap/MMCoreJ_wrap_v10.sln /target:OpenSPIM\;CoherentCube //fileLogger1 //verbosity:minimal || banner "FAILED TO BUILD DEVICE ADAPTERS! :(" | die;
+
+banner "BUILDING MMCORE & MMSTUDIO"
+
+$msbuild MMCoreJ_wrap/MMCoreJ_wrap_v10.sln /target:MMCore\;MMCoreJ_wrap\;mmstudio //fileLogger2 //verbosity:minimal || banner "FAILED TO BUILD MMCORE/MMSTUDIO! :(" | die;
+
+banner "BUILDING MICRO-MANAGER PLUGINS"
+
+$ant -quiet -buildfile "plugins/build.xml" clean compile build || banner "FAILED TO BUILD MICRO-MANAGER PLUGINS! :(" | die;
+>>>>>>> 708944b... Vastly improved build-openspim.sh
 
 banner "DONE! :D"
