@@ -45,7 +45,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="../../../3rdpartypublic/boost;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;../../../\3rdpartypublic;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS;TESTRESOURCELOCKING"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -100,7 +104,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 		<Configuration
@@ -130,7 +134,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="../../../3rdpartypublic/boost;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;../../../\3rdparty;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS;TESTRESOURCELOCKING"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -185,7 +193,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 		<Configuration
@@ -213,7 +221,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="../../../3rdpartypublic/boost;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;../../../\3rdpartypublic;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS;TESTRESOURCELOCKING"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -267,7 +279,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 		<Configuration
@@ -296,7 +308,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="../../../3rdpartypublic/boost;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;../../../\3rdparty;..\..\..\3rdparty\JAI\SDK\library\CPP\include"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS;TESTRESOURCELOCKING"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -350,7 +366,7 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
-				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
 			/>
 		</Configuration>
 	</Configurations>

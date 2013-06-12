@@ -44,7 +44,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD:DeviceAdapters/IDS_uEye/IDS_uEye.vcproj
 				AdditionalIncludeDirectories="../../MMDevice;&quot;../../../3rdparty/IDS/uEye-4.22.00/Develop/include&quot;"
+=======
+				AdditionalIncludeDirectories="&quot;../../../\3rdparty/Thorlabs/TSI-SDK/sdk&quot;;../../../micromanager1.4.13/MMDevice"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}:DeviceAdapters/TSI/TSI_1_4_13.vcproj
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -121,7 +125,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD:DeviceAdapters/IDS_uEye/IDS_uEye.vcproj
 				AdditionalIncludeDirectories="../../MMDevice;&quot;../../../3rdparty/IDS/uEye-4.22.00/Develop/include&quot;"
+=======
+				AdditionalIncludeDirectories="&quot;../../../\3rdparty/Thorlabs/TSI-SDK/sdk&quot;;../../../micromanager1.4.13/MMDevice"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}:DeviceAdapters/TSI/TSI_1_4_13.vcproj
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
@@ -199,7 +207,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+<<<<<<< HEAD:DeviceAdapters/IDS_uEye/IDS_uEye.vcproj
 				AdditionalIncludeDirectories="../../MMDevice;&quot;../../../3rdparty/IDS/uEye-4.22.00/Develop/include&quot;"
+=======
+				AdditionalIncludeDirectories="&quot;../../../\3rdparty/Thorlabs/TSI-SDK/sdk&quot;;../../../micromanager1.4.13/MMDevice"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}:DeviceAdapters/TSI/TSI_1_4_13.vcproj
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"
@@ -279,7 +291,11 @@
 				Name="VCCLCompilerTool"
 				Optimization="2"
 				EnableIntrinsicFunctions="true"
+<<<<<<< HEAD:DeviceAdapters/IDS_uEye/IDS_uEye.vcproj
 				AdditionalIncludeDirectories="../../MMDevice;&quot;../../../3rdparty/IDS/uEye-4.22.00/Develop/include&quot;"
+=======
+				AdditionalIncludeDirectories="&quot;../../../\3rdparty/Thorlabs/TSI-SDK/sdk&quot;;../../../micromanager1.4.13/MMDevice"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}:DeviceAdapters/TSI/TSI_1_4_13.vcproj
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				RuntimeLibrary="2"
 				EnableFunctionLevelLinking="true"

@@ -45,7 +45,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="..\..\..\3rdpartypublic\boost;..\..\..\3rdparty\Leica\camera\SDK1.7\BSTDFxLib\x86\Inc"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;../../../\3rdparty/Leica/camera/SDK1.7/BSTDFxLib/x86/Inc"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -129,7 +133,11 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="..\..\..\3rdpartypublic\boost;..\..\..\3rdparty\Leica\camera\SDK1.7\BSTDFxLib\x64\Inc"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;&quot;../../../\3rdparty/Leica/camera/SDK1.7/BSTDFxLib/$(PlatformName)/Inc&quot;"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;_DEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				MinimalRebuild="true"
 				ExceptionHandling="2"
@@ -211,7 +219,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="..\..\..\3rdpartypublic\boost;..\..\..\3rdparty\Leica\camera\SDK1.7\BSTDFxLib\x86\Inc"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;../../../\3rdparty/Leica/camera/SDK1.7/BSTDFxLib/x86/Inc"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
@@ -292,7 +304,11 @@
 			/>
 			<Tool
 				Name="VCCLCompilerTool"
+<<<<<<< HEAD
 				AdditionalIncludeDirectories="..\..\..\3rdpartypublic\boost;..\..\..\3rdparty\Leica\camera\SDK1.7\BSTDFxLib\x64\Inc"
+=======
+				AdditionalIncludeDirectories="../../../\3rdpartypublic/boost;&quot;../../../\3rdparty/Leica/camera/SDK1.7/BSTDFxLib/$(PlatformName)/Inc&quot;"
+>>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				PreprocessorDefinitions="WIN32;NDEBUG;_WINDOWS;_USRDLL;MODULE_EXPORTS"
 				ExceptionHandling="2"
 				RuntimeLibrary="0"
