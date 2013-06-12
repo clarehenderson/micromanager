@@ -1,5 +1,6 @@
 #!/bin/sh
 
+<<<<<<< HEAD
 rq() {
 	path="$1"
 	shift;
@@ -19,12 +20,19 @@ rq() {
 	echo "$qr" | grep -E "^[ ]{4}$key[^\r\n]REG_[A-Z0-9]+[^\r\n].+$" | sed -r -e "s/^[ ]{4}$key[^\r\n]REG_[A-Z0-9]+[^\r\n](.+)$/\1/g" && return 0;
 }
 
+=======
+>>>>>>> 17ca242... openspim.sh: Accept VS2010 instead of '09
 VCEXPRESS_URL=http://www.microsoft.com/visualstudio/eng/downloads\#d-2010-express
 STABLE_FIJI_URL=http://jenkins.imagej.net/job/Stable-Fiji
 FIJI_URL=$STABLE_FIJI_URL/lastSuccessfulBuild/artifact/fiji-win32.tar.gz
 JDK_URL="http://fiji.sc/cgi-bin/gitweb.cgi?p=java/win32.git;a=snapshot;h=HEAD;sf=tgz"
 
+<<<<<<< HEAD
 VCEXPRESS="$(rq "HKLM\\SOFTWARE\\Microsoft\\Windows\\CurrentVersion\\App Paths\\VCExpress.exe")"
+=======
+VCEXPRESS="$PROGRAMFILES/Microsoft Visual Studio 10.0/Common7/IDE/VCExpress.exe"
+test -x "$VCEXPRESS" || VCEXPRESS="$PROGRAMFILES/Microsoft Visual Studio 9.0/Common7/IDE/VCExpress.exe"
+>>>>>>> 17ca242... openspim.sh: Accept VS2010 instead of '09
 
 SRC=/src
 test ! -d /src/fiji/modules/micromanager ||
