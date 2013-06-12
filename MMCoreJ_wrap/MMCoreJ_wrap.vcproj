@@ -162,7 +162,12 @@
 			/>
 			<Tool
 				Name="VCLinkerTool"
+<<<<<<< HEAD
 				AdditionalDependencies="mmcored.lib Iphlpapi.lib"
+=======
+				AdditionalDependencies="mmcorer.lib Iphlpapi.lib"
+				ShowProgress="0"
+>>>>>>> 7e866f1... Added SPIMAcquisition plugin
 				OutputFile="$(OutDir)/MMCoreJ_wrap.dll"
 				LinkIncremental="2"
 				AdditionalLibraryDirectories="&quot;..\..\3rdpartypublic\boost\stage_$(PlatformName)\lib&quot;;&quot;..\lib_$(PlatformName)&quot;"
