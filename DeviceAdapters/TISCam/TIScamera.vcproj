@@ -74,12 +74,19 @@
 				OutputFile="$(OutDir)/mmgr_dal_$(ProjectName).dll"
 				LinkIncremental="2"
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				AdditionalLibraryDirectories="&quot;..\..\..\3rdpartypublic\boost\stage_$(PlatformName)\lib&quot;;&quot;..\..\..\3rdparty\TheImagingSource\classlib\$(PlatformName)\$(ConfigurationName)&quot;"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile="$(OutDir)/$(ProjectName).pdb"
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+<<<<<<< HEAD
+=======
+				ImportLibrary="$(OutDir)/TIScam.lib"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				TargetMachine="1"
 			/>
 			<Tool
@@ -102,7 +109,12 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+<<<<<<< HEAD
 				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+=======
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
+				ExcludedFromBuild="false"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 			/>
 		</Configuration>
 		<Configuration
@@ -166,6 +178,10 @@
 				SubSystem="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+<<<<<<< HEAD
+=======
+				ImportLibrary="$(OutDir)/TIScam.lib"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				TargetMachine="17"
 			/>
 			<Tool
@@ -188,7 +204,12 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+<<<<<<< HEAD
 				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+=======
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
+				ExcludedFromBuild="false"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 			/>
 		</Configuration>
 		<Configuration
@@ -249,6 +270,10 @@
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+<<<<<<< HEAD
+=======
+				ImportLibrary="$(OutDir)/TIScam.lib"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				TargetMachine="1"
 			/>
 			<Tool
@@ -271,7 +296,11 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+<<<<<<< HEAD
 				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+=======
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 			/>
 		</Configuration>
 		<Configuration
@@ -333,6 +362,10 @@
 				EnableCOMDATFolding="2"
 				RandomizedBaseAddress="1"
 				DataExecutionPrevention="0"
+<<<<<<< HEAD
+=======
+				ImportLibrary="$(OutDir)/TIScam.lib"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 				TargetMachine="17"
 			/>
 			<Tool
@@ -355,7 +388,11 @@
 			/>
 			<Tool
 				Name="VCPostBuildEventTool"
+<<<<<<< HEAD
 				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)"
+=======
+				CommandLine="copy &quot;$(TargetPath)&quot; ..\..\bin_$(PlatformName)\mm\$(PlatformName)"
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
 			/>
 		</Configuration>
 	</Configurations>
@@ -456,6 +493,9 @@
 	<Globals>
 	</Globals>
 </VisualStudioProject>
+<<<<<<< HEAD
 =======
 				AdditionalLibraryDirectories="&quot;..\..\..\3rdpartypublic\boost\stage_$(PlatformName)\lib&quot;;&quot;..\..\..\3rdparty\TheImagingSource
 >>>>>>> deac00d... FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
+=======
+>>>>>>> 6bbeb65... fixup! FIXUP: Visual Studio projects: copy to bin_Win{32,64}/mm/win{32,64}
