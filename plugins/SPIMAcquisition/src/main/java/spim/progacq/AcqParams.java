@@ -2,14 +2,14 @@ package spim.progacq;
 
 import java.io.File;
 
-import spim.DeviceManager;
+import spim.DeviceManager.SPIMSetup;
 import spim.DeviceManager.SPIMDevice;
 
 import mmcorej.CMMCore;
 
 public class AcqParams {
 	private CMMCore			core;
-	private DeviceManager	devMgr;
+	private SPIMSetup		setup;
 	private AcqRow[]		rows;
 
 	private double			timeStepSeconds;
@@ -32,16 +32,16 @@ public class AcqParams {
 		this(null, null, null, 0D, 0, false, null, null, false, null);
 	}
 
-	public AcqParams(CMMCore icore, DeviceManager mgr, AcqRow[] rows) {
+	public AcqParams(CMMCore icore, SPIMSetup mgr, AcqRow[] rows) {
 		this(icore, mgr, rows, 0D, 1, false, null, rows[0].getDevices(), false, null);
 	}
 
-	public AcqParams(CMMCore core, DeviceManager mgr, AcqRow[] rows, double deltat, int count)
+	public AcqParams(CMMCore core, SPIMSetup mgr, AcqRow[] rows, double deltat, int count)
 	{
 		this(core, mgr, rows, deltat, count, false, null, rows[0].getDevices(), false, null);
 	}
 
-	public AcqParams(CMMCore iCore, DeviceManager mgr, AcqRow[] iRows,
+	public AcqParams(CMMCore iCore, SPIMSetup mgr, AcqRow[] iRows,
 			double iTimeStep, int iTimeSeqCnt, boolean iContinuous,
 			ProgrammaticAcquisitor.AcqProgressCallback iListener, SPIMDevice[] iMetaDevices, boolean saveIndv,
 			File rootDir) {
@@ -64,13 +64,13 @@ public class AcqParams {
 		);
 	}
 
-	public AcqParams(CMMCore iCore, DeviceManager mgr, AcqRow[] iRows,
+	public AcqParams(CMMCore iCore, SPIMSetup setup, AcqRow[] iRows,
 			double iTimeStep, int iTimeSeqCnt, boolean iContinuous,
 			ProgrammaticAcquisitor.AcqProgressCallback iListener, SPIMDevice[] iMetaDevices,
 			AcqOutputHandler handler) {
 
 		setCore(iCore);
-		setDeviceManager(mgr);
+		setSetup(setup);
 		setRows(iRows);
 		setTimeStepSeconds(iTimeStep);
 		setTimeSeqCount(iTimeSeqCnt);
@@ -98,15 +98,15 @@ public class AcqParams {
 	/**
 	 * @return the device manager
 	 */
-	public DeviceManager getDeviceManager() {
-		return devMgr;
+	public SPIMSetup getSetup() {
+		return setup;
 	}
 
 	/**
 	 * @param stepDevices the stepDevices to set
 	 */
-	public void setDeviceManager(DeviceManager mgr) {
-		this.devMgr = mgr;
+	public void setSetup(SPIMSetup setup) {
+		this.setup = setup;
 	}
 
 	/**

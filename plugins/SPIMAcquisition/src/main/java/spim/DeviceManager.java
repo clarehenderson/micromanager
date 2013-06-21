@@ -1,5 +1,7 @@
 package spim;
 
+import ij.IJ;
+
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
@@ -10,6 +12,9 @@ import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.HashMap;
 import java.util.List;
+import java.util.prefs.BackingStoreException;
+import java.util.prefs.Preferences;
+
 import javax.swing.BorderFactory;
 import javax.swing.Box;
 import javax.swing.BoxLayout;
@@ -20,8 +25,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTabbedPane;
 import javax.swing.JTextField;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
+
+import org.apache.commons.math.geometry.euclidean.threed.Vector3D;
 
 import mmcorej.CMMCore;
 import mmcorej.DeviceType;
@@ -37,7 +42,7 @@ import mmcorej.StrVector;
 public class DeviceManager extends JFrame {
 	private static final long serialVersionUID = -3345675926744884431L;
 
-	public enum SPIMDevice {
+	public static enum SPIMDevice {
 		STAGE_X ("X Stage", DeviceType.StageDevice),
 		STAGE_Y ("Y Stage", DeviceType.StageDevice),
 		STAGE_XY ("XY Stage", DeviceType.XYStageDevice),
@@ -65,20 +70,35 @@ public class DeviceManager extends JFrame {
 		}
 	};
 
-	public static class SPIMSetupDevices extends JPanel {
+	public static class SPIMSetup extends JPanel {
 		private static final long serialVersionUID = 5356126433493461392L;
 
 		private EnumMap<SPIMDevice, String> labelMap;
 		private JTextField name;
 		private CMMCore core;
+		private EnumMap<SPIMDevice, Double> stageDests;
 
-		public SPIMSetupDevices(CMMCore core, String name, boolean fromMM, final DeviceManager parent) {
+		public SPIMSetup(CMMCore core, String name, EnumMap<SPIMDevice, String> labels, final DeviceManager parent) {
 			this.core = core;
 			labelMap = new EnumMap<SPIMDevice, String>(SPIMDevice.class);
+			stageDests = new EnumMap<SPIMDevice, Double>(SPIMDevice.class);
 
-			if(fromMM)
-				for(SPIMDevice type : SPIMDevice.values())
-					labelMap.put(type, getMMDefaultDevice(type));
+			for(SPIMDevice type : SPIMDevice.values())
+				labelMap.put(type, labels == null ? getMMDefaultDevice(type) : labels.get(type));
+
+			for(SPIMDevice type : labelMap.keySet()) try
+			{
+				if(type.getMMType().equals(DeviceType.StageDevice))
+					if(isConnected(type))
+						stageDests.put(type, getPosition(type));
+					else
+						stageDests.put(type, 0.0D);
+			}
+			catch(Exception e)
+			{
+				ij.IJ.handleException(e);
+				stageDests.put(type, 0.0D);
+			}
 
 			setLayout(new BoxLayout(this,BoxLayout.PAGE_AXIS));
 
@@ -86,7 +106,7 @@ public class DeviceManager extends JFrame {
 			this.name.addKeyListener(new KeyAdapter() {
 				@Override
 				public void keyReleased(KeyEvent ke) {
-					parent.updateSetupName(SPIMSetupDevices.this);
+					parent.updateSetupName(SPIMSetup.this);
 				}
 			});
 			add(LayoutUtils.titled("Setup Name/Label", (JComponent) LayoutUtils.labelMe(this.name, "Name: ")));
@@ -102,11 +122,11 @@ public class DeviceManager extends JFrame {
 				}
 
 				JComboBox cmbo = new JComboBox(augmentNone(core.getLoadedDevicesOfType(type.getMMType())));
-				cmbo.setSelectedItem(getDeviceLabel(type) != null ? getDeviceLabel(type) : "(none)");
+				cmbo.setSelectedItem(!getDeviceLabel(type).isEmpty() ? getDeviceLabel(type) : "(none)");
 				cmbo.addItemListener(new ItemListener() {
 					@Override
 					public void itemStateChanged(ItemEvent ie) {
-						labelMap.put(type, ie.getItem().toString().equals("(none)") ? null : ie.getItem().toString());
+						labelMap.put(type, ie.getItem().toString().equals("(none)") ? "" : ie.getItem().toString());
 					}
 				});
 
@@ -122,8 +142,14 @@ public class DeviceManager extends JFrame {
 		}
 
 		public String getDeviceLabel(SPIMDevice type) {
-			return labelMap.get(type);
+			String ret = labelMap.get(type);
+
+			return ret != null ? ret : "";
 		}
+
+		/*
+		 * Connected device routines
+		 */
 
 		public boolean isConnected(SPIMDevice type)
 		{
@@ -174,18 +200,143 @@ public class DeviceManager extends JFrame {
 			return isMinimalMicroscope() && getStageDimensions() >= 4;
 		}
 
+		/*
+		 * SetPosition variants
+		 */
+
+		public void setPosition(Double x, Double y, Double z, Double t) throws Exception
+		{
+			if(x != null)
+				setPosition(SPIMDevice.STAGE_X, x);
+
+			if(y != null)
+				setPosition(SPIMDevice.STAGE_Y, y);
+
+			if(z != null)
+				setPosition(SPIMDevice.STAGE_Z, z);
+
+			if(t != null)
+				setPosition(SPIMDevice.STAGE_THETA, t);
+		}
+
+		public void setPosition(Vector3D xyz, double t) throws Exception
+		{
+			setPosition(xyz.getX(), xyz.getY(), xyz.getZ(), t);
+		}
+
+		public void setPosition(Vector3D xyz) throws Exception
+		{
+			setPosition(xyz.getX(), xyz.getY(), xyz.getZ(), null);
+		}
+
+		public void setPosition(double x, double y) throws Exception
+		{
+			setPosition(x, y, null, null);
+		}
+
+		public void waitOn(SPIMDevice... devices) throws Exception
+		{
+			for(SPIMDevice dev : devices)
+				core.waitForDevice(getDeviceLabel(dev));
+		}
+
+		public void waitAll() throws Exception
+		{
+			for(String dev : labelMap.values())
+				if(dev != null && !dev.isEmpty())
+					core.waitForDevice(dev);
+		}
+
+		public void setPosition(SPIMDevice stage, double dest) throws Exception
+		{
+			if(stage != SPIMDevice.STAGE_X && stage != SPIMDevice.STAGE_Y &&
+				stage != SPIMDevice.STAGE_Z && stage != SPIMDevice.STAGE_THETA)
+				throw new Exception("setPosition called with non-Stage device " + stage.getText() +".");
+
+			if(isConnected(stage))
+			{
+				stageDests.put(stage, dest);
+				core.setPosition(getDeviceLabel(stage), dest);
+			}
+			else if((stage == SPIMDevice.STAGE_X || stage == SPIMDevice.STAGE_Y) &&
+					isConnected(SPIMDevice.STAGE_XY))
+			{
+				stageDests.put(stage, dest);
+				core.setXYPosition(getDeviceLabel(SPIMDevice.STAGE_XY),
+					stageDests.get(SPIMDevice.STAGE_X),
+					stageDests.get(SPIMDevice.STAGE_Y));
+			}
+			else
+			{
+				throw new Exception("setPosition called on disconnected Stage device " + stage.getText() + ".");
+			}
+		}
+
+		/*
+		 * GetPosition variants
+		 */
+
+		public double getDestination(SPIMDevice stage) throws Exception
+		{
+			if(stage != SPIMDevice.STAGE_X && stage != SPIMDevice.STAGE_Y &&
+					stage != SPIMDevice.STAGE_Z && stage != SPIMDevice.STAGE_THETA)
+					throw new Exception("getDestination called with non-Stage device " + stage.getText() + ".");
+
+			return stageDests.get(stage);
+		}
+
+		public double getPosition(SPIMDevice stage) throws Exception
+		{
+			if(stage != SPIMDevice.STAGE_X && stage != SPIMDevice.STAGE_Y &&
+					stage != SPIMDevice.STAGE_Z && stage != SPIMDevice.STAGE_THETA)
+					throw new Exception("getPosition called with non-Stage device " + stage.getText() + ".");
+
+			if(isConnected(stage))
+			{
+				return core.getPosition(getDeviceLabel(stage));
+			}
+			else if((stage == SPIMDevice.STAGE_X || stage == SPIMDevice.STAGE_Y) &&
+					isConnected(SPIMDevice.STAGE_XY))
+			{
+				if(stage == SPIMDevice.STAGE_X)
+					return core.getXPosition(getDeviceLabel(SPIMDevice.STAGE_XY));
+				else
+					return core.getYPosition(getDeviceLabel(SPIMDevice.STAGE_XY));
+			}
+			else
+			{
+				throw new Exception("getPosition called on disconnected Stage device " + stage.getText() + ".");
+			}
+		}
+
+		public double getAngle() throws Exception
+		{
+			return getPosition(SPIMDevice.STAGE_THETA);
+		}
+
+		public Vector3D getPosition() throws Exception
+		{
+			return new Vector3D(getPosition(SPIMDevice.STAGE_X),
+					getPosition(SPIMDevice.STAGE_Y),
+					getPosition(SPIMDevice.STAGE_Z));
+		}
+
+		/*
+		 * Private helper routines
+		 */
+
 		private String getMMDefaultDevice(SPIMDevice type) {
 			switch(type) {
 			case STAGE_X:
-				if(core.getXYStageDevice() != null && coreHasDevOfType(DeviceType.StageDevice, core.getXYStageDevice() + ".X"))
+				if(coreHasDevOfType(DeviceType.StageDevice, core.getXYStageDevice() + ".X"))
 					return core.getXYStageDevice() + ".X";
 
-				return null;
+				return "";
 			case STAGE_Y:
-				if(core.getXYStageDevice() != null && strVecContains(core.getLoadedDevicesOfType(DeviceType.StageDevice), core.getXYStageDevice() + ".Y"))
+				if(coreHasDevOfType(DeviceType.StageDevice, core.getXYStageDevice() + ".Y"))
 					return core.getXYStageDevice() + ".Y";
 
-				return null;
+				return "";
 			case STAGE_XY:
 				return core.getXYStageDevice();
 			case STAGE_Z:
@@ -195,7 +346,7 @@ public class DeviceManager extends JFrame {
 					if(!lbl.equals(core.getFocusDevice()) && !lbl.endsWith(".X") && !lbl.endsWith(".Y"))
 						return lbl;
 
-				return null;
+				return "";
 			case LASER1:
 				return core.getShutterDevice();
 			case LASER2:
@@ -203,7 +354,7 @@ public class DeviceManager extends JFrame {
 					if(!lbl.equals(core.getShutterDevice()))
 						return lbl;
 
-				return null;
+				return "";
 			case CAMERA1:
 				return core.getCameraDevice();
 			case CAMERA2:
@@ -215,7 +366,7 @@ public class DeviceManager extends JFrame {
 			case SYNCHRONIZER:
 				return core.getShutterDevice();
 			default:
-				return null;
+				return "";
 			}
 		}
 
@@ -251,7 +402,7 @@ public class DeviceManager extends JFrame {
 
 	private CMMCore core;
 	private JTabbedPane setupTabs;
-	private List<SPIMSetupDevices> setups;
+	private List<SPIMSetup> setups;
 
 	/**
 	 * Returns the Micro-Manager device label for the specified device type, in
@@ -287,53 +438,58 @@ public class DeviceManager extends JFrame {
 	 * @param setup Which attached setup to get the device of.
 	 * @return The setup object, or null if not available.
 	 */
-	public SPIMSetupDevices getSetup(int setup) {
+	public SPIMSetup getSetup(int setup) {
 		if(setups.size() <= setup)
 			return null;
 
 		return setups.get(setup);
 	}
 
+	/**
+	 * Returns the first setup object.
+	 * @return The first setup object, or null if there is none (weird...)
+	 */
+	public SPIMSetup getSetup() {
+		if(setups.size() <= 0)
+			return null;
+
+		return setups.get(0);
+	}
+
 	public DeviceManager(CMMCore core) {
 		super("SPIM Device Manager");
 
 		this.core = core;
-		this.setups = new ArrayList<SPIMSetupDevices>(1);
-
-		// Build the first setup automatically from MM's devices.
-		this.setups.add(new SPIMSetupDevices(core, "Default Setup", true, this));
+		this.setups = new ArrayList<SPIMSetup>(1);
 
 		java.awt.Container me = getContentPane();
 		me.setLayout(new BoxLayout(me, BoxLayout.PAGE_AXIS));
 
 		setupTabs = new JTabbedPane(1);
-		setupTabs.add("Default Setup", setups.get(0));
 
-		setupTabs.add("+", new JPanel());
-		setupTabs.addChangeListener(new ChangeListener() {
-			@Override
-			public void stateChanged(ChangeEvent ce) {
-				final int lastIdx = setupTabs.getTabCount() - 1;
-				if(setupTabs.getSelectedIndex() == lastIdx) {
-					SPIMSetupDevices setup = new SPIMSetupDevices(DeviceManager.this.core,
-							"Setup " + (lastIdx+1), lastIdx == 0, DeviceManager.this);
+		// Build the first setup automatically from MM's devices.
+		addSetup(new SPIMSetup(core, "Default Setup", null, this));
 
-					if(lastIdx >= setups.size())
-						setups.add(setup);
+		me.add(setupTabs);
 
-					setupTabs.setSelectedIndex(0);
-					setupTabs.insertTab(setup.getName(), null, setup, null, lastIdx);
-					setupTabs.setSelectedComponent(setup);
-				}
+		JButton addBtn = new JButton("Add Setup");
+		addBtn.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent ae) {
+				SPIMSetup setup = new SPIMSetup(DeviceManager.this.core,
+						"New Setup", setups.size() == 0 ? null : null, DeviceManager.this); // TODO: Make defaults blank?
+
+				addSetup(setup);
 			}
 		});
-		me.add(setupTabs);
 
 		JButton removeBtn = new JButton("Remove Setup");
 		removeBtn.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
-				removeSetup((SPIMSetupDevices)setupTabs.getSelectedComponent());
+				if(setupTabs.getSelectedIndex() == 0)
+					return;
+
+				removeSetup((SPIMSetup)setupTabs.getSelectedComponent());
 			}
 		});
 		me.add(LayoutUtils.horizPanel(Box.createHorizontalStrut(386), removeBtn));
@@ -343,19 +499,69 @@ public class DeviceManager extends JFrame {
 		setMaximumSize(getPreferredSize());
 	}
 
-	public void save() {
-		// TODO
+	private void addSetup(SPIMSetup setup)
+	{
+		setups.add(setup);
+
+		if(setupTabs.getTabCount() > 0) {
+			setupTabs.setSelectedIndex(0);
+			setupTabs.insertTab(setup.getName(), null, setup, null, setupTabs.getTabCount() - 1);
+		} else {
+			setupTabs.insertTab(setup.getName(), null, setup, null, 0);
+		}
+		setupTabs.setSelectedComponent(setup);
 	}
 
-	public void load() {
-		// TODO
+	public void save(Preferences prefs) throws BackingStoreException {
+		for(int i=0; i < setups.size(); ++i)
+		{
+			Preferences setupPrefs = prefs.node(Integer.toString(i));
+
+			setupPrefs.putBoolean("fromMM", false);
+			setupPrefs.put("name", setups.get(i).getName());
+
+			for(SPIMDevice type : SPIMDevice.values())
+				if(setups.get(i).isConnected(type))
+					setupPrefs.put(type.name().toLowerCase(), setups.get(i).getDeviceLabel(type));
+		}
 	}
 
-	public String getSetupName(int setup) {
-		return setupTabs.getTitleAt(setup);
+	public void load(Preferences prefs) {
+		try {
+			String[] children = prefs.childrenNames(); // might throw; don't clear yet.
+
+			if(children.length == 0) // don't clear unless we're actually loading something
+				return;
+
+			setups.clear();
+			setupTabs.removeAll();
+			setupTabs.add("+", new JPanel());
+
+			for(String name : children) {
+				Preferences setupPrefs = prefs.node(name);
+
+				EnumMap<SPIMDevice, String> labelsMap = null;
+
+				if(!setupPrefs.getBoolean("fromMM", false)) {
+					labelsMap = new EnumMap<SPIMDevice, String>(SPIMDevice.class);
+
+					for(SPIMDevice type : SPIMDevice.values())
+						labelsMap.put(type, setupPrefs.get(type.name().toLowerCase(), null));
+				}
+
+				SPIMSetup setup = new SPIMSetup(core,
+						setupPrefs.get("name", "(null)"),
+						labelsMap,
+						this);
+
+				addSetup(setup);
+			}
+		} catch(BackingStoreException e) {
+			IJ.handleException(e);
+		}
 	}
 
-	protected void updateSetupName(SPIMSetupDevices setup) {
+	protected void updateSetupName(SPIMSetup setup) {
 		int idx = setupTabs.indexOfComponent(setup);
 
 		if(idx >= 0)
@@ -364,14 +570,9 @@ public class DeviceManager extends JFrame {
 			System.out.println("Couldn't find tab...");
 	}
 	
-	private void removeSetup(SPIMSetupDevices setup) {
-		int idx = setupTabs.indexOfComponent(setup);
-		if(idx == setupTabs.getTabCount() - 2) {
-			if(idx == 0)
-				return;
-			else
-				setupTabs.setSelectedIndex(idx - 1);
-		}
+	private void removeSetup(SPIMSetup setup) {
+		if(setup == setupTabs.getSelectedComponent())
+			setupTabs.setSelectedIndex(setupTabs.indexOfComponent(setup) - 1);
 
 		setups.remove(setup);
 		setupTabs.remove(setup);

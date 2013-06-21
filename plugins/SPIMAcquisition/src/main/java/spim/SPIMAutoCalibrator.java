@@ -53,6 +53,9 @@ import org.micromanager.utils.MDUtils;
 import org.micromanager.utils.MMScriptException;
 import org.micromanager.utils.ReportingUtils;
 
+import spim.DeviceManager.SPIMSetup;
+import spim.DeviceManager.SPIMDevice;
+
 import edu.valelab.GaussianFit.GaussianFit;
 
 public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, ActionListener, MouseListener, MouseMotionListener {
@@ -73,8 +76,8 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 	private Line rotAxis;
 
 	private CMMCore core;
+	private SPIMSetup setup;
 	private MMStudioMainFrame gui;
-	private String twisterLabel;
 
 	private JList pointsTable;
 
@@ -91,12 +94,12 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 	private JCheckBox visualFit;
 	private JCheckBox hypersphere;
 
-	public SPIMAutoCalibrator(CMMCore core, MMStudioMainFrame gui, String itwister) {
+	public SPIMAutoCalibrator(CMMCore core, SPIMSetup setup, MMStudioMainFrame gui) {
 		super("SPIM Automatic Calibration");
 
 		this.core = core;
+		this.setup = setup;
 		this.gui = gui;
-		this.twisterLabel = itwister;
 
 		rotAxis = null;
 
@@ -191,25 +194,21 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 
 	@Override
 	public double getUmPerPixel() {
-		// TODO Auto-generated method stub
 		return umPerPix;
 	}
 
 	@Override
 	public Vector3D getRotationOrigin() {
-		// TODO Auto-generated method stub
 		return rotAxis != null ? rotAxis.getOrigin() : null;
 	}
 
 	@Override
 	public Vector3D getRotationAxis() {
-		// TODO Auto-generated method stub
 		return rotAxis != null ? rotAxis.getDirection() : null;
 	}
 
 	@Override
 	public boolean getIsCalibrated() {
-		// TODO Auto-generated method stub
 		return getUmPerPixel() != 0 && rotAxis != null;
 	}
 
@@ -294,28 +293,20 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 	}
 
 	@Override
-	public void mouseClicked(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void mouseClicked(MouseEvent arg0) {}
 
 	@Override
-	public void mouseEntered(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void mouseEntered(MouseEvent arg0) {}
 
 	@Override
-	public void mouseExited(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void mouseExited(MouseEvent arg0) {}
 
 	private Vector2D point1, point2;
 	private boolean inMeasureMode;
 	private double umPerPix = 0.43478260869565217391304347826087;
 
 	@Override
-	public void mousePressed(MouseEvent arg0) {
-		// TODO Auto-generated method stub
-	}
+	public void mousePressed(MouseEvent arg0) {}
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
@@ -383,9 +374,9 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 			Line a = fitAxis();
 
 			Vector3D cur = new Vector3D(
-					core.getXPosition(core.getXYStageDevice()),
-					core.getYPosition(core.getXYStageDevice()),
-					core.getPosition(core.getFocusDevice())
+					setup.getPosition(SPIMDevice.STAGE_X),
+					setup.getPosition(SPIMDevice.STAGE_Y),
+					setup.getPosition(SPIMDevice.STAGE_Z)
 				);
 
 			Vector3D res = new Rotation(a.getDirection(),
@@ -398,7 +389,7 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 
 			return recent.getZ() + (recent.getZ() - older.getZ());
 		} else {
-			return core.getPosition(core.getFocusDevice());
+			return setup.getPosition(SPIMDevice.STAGE_Z);
 		}
 	}
 
@@ -421,8 +412,8 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 		ImageStack stack = new ImageStack(roi.width, roi.height);
 
 		for(double z = basez - scanDelta; z <= basez + scanDelta; ++z) {
-			core.setPosition(core.getFocusDevice(), z);
-			core.waitForDevice(core.getFocusDevice());
+			setup.setPosition(SPIMDevice.STAGE_Z, z);
+			setup.waitOn(SPIMDevice.STAGE_Z);
 			Thread.sleep(15);
 
 			core.snapImage();
@@ -449,11 +440,11 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 			ReportingUtils.logMessage(String.format("!!!--- Gaussian fit: C=%.2f, %.2f, INT=%.2f, BGR=%.2f.",
 					x, y, params[GaussianFit.INT], params[GaussianFit.BGR]));
 
-			double offsx = core.getXPosition(core.getXYStageDevice()) +
+			double offsx = setup.getPosition(SPIMDevice.STAGE_X) +
 					(ip.getRoi().getMinX() + x -
 					ip.getWidth()/2)*getUmPerPixel();
 
-			double offsy = core.getYPosition(core.getXYStageDevice()) +
+			double offsy = setup.getPosition(SPIMDevice.STAGE_Y) +
 					(ip.getRoi().getMinY() + y -
 					ip.getHeight()/2)*getUmPerPixel();
 
@@ -464,13 +455,13 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 					x < cropped.getWidth() && y < cropped.getHeight()) {
 				intsum += intbgr;
 
-				ReportingUtils.logMessage("!!!--- Including z=" + z + " (" + core.getPosition(core.getFocusDevice()) + "): " + offsx + ", " + offsy + ":");
-				ReportingUtils.logMessage(core.getXPosition(core.getXYStageDevice()) + " + (" + ip.getRoi().getMinX() + " + " + x + " - " + ip.getWidth() + "/2)*" + getUmPerPixel() + ")*" + intbgr + ";");
-				ReportingUtils.logMessage(core.getYPosition(core.getXYStageDevice()) + " + (" + ip.getRoi().getMinY() + " + " + y + " - " + ip.getHeight() + "/2)*" + getUmPerPixel() + ")*" + intbgr + ";");
+				ReportingUtils.logMessage("!!!--- Including z=" + z + " (" + setup.getPosition(SPIMDevice.STAGE_Z) + "): " + offsx + ", " + offsy + ":");
+				ReportingUtils.logMessage(setup.getPosition(SPIMDevice.STAGE_X) + " + (" + ip.getRoi().getMinX() + " + " + x + " - " + ip.getWidth() + "/2)*" + getUmPerPixel() + ")*" + intbgr + ";");
+				ReportingUtils.logMessage(setup.getPosition(SPIMDevice.STAGE_Y) + " + (" + ip.getRoi().getMinY() + " + " + y + " - " + ip.getHeight() + "/2)*" + getUmPerPixel() + ")*" + intbgr + ";");
 
 				cx += offsx*intbgr;
 				cy += offsy*intbgr;
-				cz += core.getPosition(core.getFocusDevice())*intbgr;
+				cz += setup.getPosition(SPIMDevice.STAGE_Z)*intbgr;
 				
 				java.awt.Color overlayColor = java.awt.Color.RED;
 
@@ -502,8 +493,8 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 			}
 		}
 
-		core.setPosition(core.getFocusDevice(), basez);
-		core.waitForDevice(core.getFocusDevice());
+		setup.setPosition(SPIMDevice.STAGE_Z, basez);
+		setup.waitOn(SPIMDevice.STAGE_Z);
 
 		cx /= intsum;
 		cy /= intsum;
@@ -545,8 +536,9 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 			return false;
 
 		try {
-			core.setXYPosition(core.getXYStageDevice(), next.getX(), next.getY());
-			core.setPosition(core.getFocusDevice(), next.getZ());
+			setup.setPosition(SPIMDevice.STAGE_X, next.getX());
+			setup.setPosition(SPIMDevice.STAGE_Y, next.getY());
+			setup.setPosition(SPIMDevice.STAGE_Z, next.getZ());
 		} catch(Exception e) {
 			ReportingUtils.logError(e);
 			JOptionPane.showMessageDialog(this, "Couldn't recenter: " + e.getMessage());
@@ -583,8 +575,8 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 			exitStatus = null;
 
 			try {
-				core.setPosition(twisterLabel, (core.getPosition(twisterLabel) + 1));
-				core.waitForDevice(twisterLabel);
+				setup.setPosition(SPIMDevice.STAGE_THETA, setup.getPosition(SPIMDevice.STAGE_THETA)+1);
+				setup.waitOn(SPIMDevice.STAGE_THETA);
 				Thread.sleep(50);
 				if(!getNextBead()) {
 					JOptionPane.showMessageDialog(SPIMAutoCalibrator.this,
@@ -667,9 +659,9 @@ public class SPIMAutoCalibrator extends JFrame implements SPIMCalibrator, Action
 
 			try {
 				mdl.set(pointsTable.getSelectedIndex(),
-						new Vector3D(core.getXPosition(core.getXYStageDevice()),
-								core.getYPosition(core.getXYStageDevice()),
-								core.getPosition(core.getFocusDevice())));
+						new Vector3D(setup.getPosition(SPIMDevice.STAGE_X),
+								setup.getPosition(SPIMDevice.STAGE_Y),
+								setup.getPosition(SPIMDevice.STAGE_Z)));
 			} catch(Exception e) {
 				JOptionPane.showMessageDialog(this, "Couldn't fetch: " + e.getMessage());
 			}
